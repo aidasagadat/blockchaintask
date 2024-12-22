@@ -128,3 +128,38 @@ class Blockchain:
             print(f"Previous Hash: {block.previous_hash}")
             print(f"Merkle Root: {block.merkle_root}")
             print(f"Timestamp: {block.timestamp}\n")
+
+
+blockchain = Blockchain()
+blockchain.add_transaction("Alice", "Bob", 100)
+blockchain.mine_block()
+blockchain.add_transaction("Bob", "Charlie", 50)
+blockchain.mine_block()
+
+blockchain.add_transaction("Aida", "Adiya", 30)
+blockchain.mine_block()
+
+blockchain.add_transaction("Aida", "Amina", 30)
+blockchain.mine_block()
+
+blockchain.add_transaction("Amina", "Adiya", 30)
+blockchain.mine_block()
+
+blockchain.add_transaction("Lala", "Lalalala", 30)
+blockchain.mine_block()
+
+blockchain.add_transaction("Jaja", "Jajajaja", 30)
+blockchain.mine_block()
+
+blockchain.add_transaction("Nana", "Nananana", 30)
+blockchain.mine_block()
+
+blockchain.add_transaction("Uaua", "Uauauaua", 30)
+blockchain.mine_block()
+
+blockchain.add_transaction("Haha", "Hahahaha", 30)
+blockchain.mine_block()
+
+blockchain.print_blockchain()
+
+print("Blockchain Valid: ", blockchain.validate_blockchain())
