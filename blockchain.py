@@ -100,3 +100,12 @@ class Blockchain:
     def __init__(self):
         self.chain = [self.create_genesis_block()]
         self.pending_transactions = []
+
+
+    def create_genesis_block(self):
+        return Block("0", time.time(), [])
+
+    def mine_block(self):
+        block = Block(self.chain[-1].hash, time.time(), self.pending_transactions)
+        self.chain.append(block)
+        self.pending_transactions = []
