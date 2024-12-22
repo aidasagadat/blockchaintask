@@ -136,7 +136,7 @@ blockchain.mine_block()
 blockchain.add_transaction("Bob", "Charlie", 50)
 blockchain.mine_block()
 
-blockchain.add_transaction("Aida", "Adiya", 30)
+blockchain.add_transaction("Aidaa", "Adiya", 30)
 blockchain.mine_block()
 
 blockchain.add_transaction("Aida", "Amina", 30)
