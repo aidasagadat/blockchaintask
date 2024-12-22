@@ -14,6 +14,22 @@ def sha256(data):
         0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0b5d9, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
         0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
     ]
+    
+    def pad_data(data):
+        length = len(data) * 8
+        data += b'\x80'
+        while len(data) % 64 != 56:
+            data += b'\x00'
+        data += length.to_bytes(8, 'big')
+        return data
+
+    def message_schedule(data):
+        w = list(data)
+        for i in range(16, 64):
+            s0 = right_rotate(w[i-15], 7) ^ right_rotate(w[i-15], 18) ^ (w[i-15] >> 3)
+            s1 = right_rotate(w[i-2], 17) ^ right_rotate(w[i-2], 19) ^ (w[i-2] >> 10)
+            w.append((w[i-16] + s0 + w[i-7] + s1) & 0xFFFFFFFF)
+        return w
 
 
 
