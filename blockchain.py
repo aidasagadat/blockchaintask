@@ -30,6 +30,23 @@ def sha256(data):
             s1 = right_rotate(w[i-2], 17) ^ right_rotate(w[i-2], 19) ^ (w[i-2] >> 10)
             w.append((w[i-16] + s0 + w[i-7] + s1) & 0xFFFFFFFF)
         return w
+        
+    def compress_block(h, w):
+        a, b, c, d, e, f, g, h_ = h
+        for i in range(64):
+            t1 = (h_ + (right_rotate(e, 6) ^ right_rotate(e, 11) ^ right_rotate(e, 25)) + ((e & f) ^ (~e & g)) + k[i] + w[i]) & 0xFFFFFFFF
+            t2 = (right_rotate(a, 2) ^ right_rotate(a, 13) ^ right_rotate(a, 22) + ((a & b) ^ (a & c) ^ (b & c))) & 0xFFFFFFFF
+            h_ = g
+            g = f
+            f = e
+            e = (d + t1) & 0xFFFFFFFF
+            d = c
+            c = b
+            b = a
+            a = (t1 + t2) & 0xFFFFFFFF
+        return [(a + h[0]) & 0xFFFFFFFF, (b + h[1]) & 0xFFFFFFFF, (c + h[2]) & 0xFFFFFFFF,
+                (d + h[3]) & 0xFFFFFFFF, (e + h[4]) & 0xFFFFFFFF, (f + h[5]) & 0xFFFFFFFF,
+                (g + h[6]) & 0xFFFFFFFF, (h_ + h[7]) & 0xFFFFFFFF]
 
 
 
