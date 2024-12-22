@@ -109,3 +109,22 @@ class Blockchain:
         block = Block(self.chain[-1].hash, time.time(), self.pending_transactions)
         self.chain.append(block)
         self.pending_transactions = []
+
+    def add_transaction(self, sender, receiver, amount):
+        transaction = Transaction(sender, receiver, amount)
+        self.pending_transactions.append(transaction)
+
+    def validate_blockchain(self):
+        for i in range(1, len(self.chain)):
+            if self.chain[i].hash != self.chain[i].hash_block():
+                return False
+            if self.chain[i].previous_hash != self.chain[i-1].hash:
+                return False
+        return True
+
+    def print_blockchain(self):
+        for i, block in enumerate(self.chain):
+            print(f"Block {i} Hash: {block.hash}")
+            print(f"Previous Hash: {block.previous_hash}")
+            print(f"Merkle Root: {block.merkle_root}")
+            print(f"Timestamp: {block.timestamp}\n")
