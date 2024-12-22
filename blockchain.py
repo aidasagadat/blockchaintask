@@ -93,3 +93,10 @@ class Block:
     def hash_block(self):
         block_data = f"{self.previous_hash}{self.timestamp}{self.merkle_root}"
         return sha256(block_data.encode('utf-8'))
+    
+
+
+class Blockchain:
+    def __init__(self):
+        self.chain = [self.create_genesis_block()]
+        self.pending_transactions = []
