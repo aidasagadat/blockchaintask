@@ -47,7 +47,14 @@ def sha256(data):
         return [(a + h[0]) & 0xFFFFFFFF, (b + h[1]) & 0xFFFFFFFF, (c + h[2]) & 0xFFFFFFFF,
                 (d + h[3]) & 0xFFFFFFFF, (e + h[4]) & 0xFFFFFFFF, (f + h[5]) & 0xFFFFFFFF,
                 (g + h[6]) & 0xFFFFFFFF, (h_ + h[7]) & 0xFFFFFFFF]
-
+        
+    h = [0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a, 0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19]
+    data = pad_data(data)
+    for i in range(0, len(data), 64):
+        block = data[i:i+64]
+        w = message_schedule([int.from_bytes(block[j:j+4], 'big') for j in range(0, 64, 4)])
+        h = compress_block(h, w)
+    return ''.join(f'{x:08x}' for x in h)
 
 
 
