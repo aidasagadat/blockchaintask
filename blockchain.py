@@ -89,3 +89,7 @@ class Block:
         self.transactions = transactions
         self.merkle_root = create_merkle_root(transactions)
         self.hash = self.hash_block()
+
+    def hash_block(self):
+        block_data = f"{self.previous_hash}{self.timestamp}{self.merkle_root}"
+        return sha256(block_data.encode('utf-8'))
