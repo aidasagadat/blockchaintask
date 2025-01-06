@@ -24,3 +24,13 @@ def generate_keys():
     e = 17  
     d = mod_inverse(e, phi)
     return (e, n), (d, n)
+def sign(private_key, document):
+    d, n = private_key
+    document_hash = int(sha256(document), 16) % n
+    return pow(document_hash, d, n)
+
+def verify(public_key, document, signature):
+    e, n = public_key
+    document_hash = int(sha256(document), 16) % n
+    calculated_hash = pow(signature, e, n)
+    return document_hash == calculated_hash
