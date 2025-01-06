@@ -78,3 +78,28 @@ class Blockchain:
             print("Transaction added to the blockchain.")
         else:
             print("Transaction verification failed!")
+
+# Main Program
+if __name__ == "__main__":
+    # Create wallets for Alice and Bob
+    alice = Wallet("Alice")
+    bob = Wallet("Bob")
+
+    print("Alice's Public Key:", alice.public_key)
+    print("Bob's Public Key:", bob.public_key)
+
+    # Alice sends money to Bob
+    transaction = alice.create_transaction(bob.public_key, 50)
+    print("\nCreated Transaction:", transaction)
+
+    # Verify and add transaction to the blockchain
+    blockchain = Blockchain()
+    try:
+        blockchain.add_transaction(transaction)
+    except ValueError as e:
+        print(f"Transaction verification failed: {e}")
+
+    # Print blockchain details
+    print("\nBlockchain Pending Transactions:")
+    for tx in blockchain.pending_transactions:
+        print(tx)
