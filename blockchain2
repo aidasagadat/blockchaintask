@@ -47,3 +47,9 @@ class Transaction:
 
     def __str__(self):
         return f"Transaction(sender={self.sender}, receiver={self.receiver}, amount={self.amount}, signature={self.signature})"
+
+def verify_transaction(transaction):
+    document = f"{transaction.sender}{transaction.receiver}{transaction.amount}"
+    if not verify(transaction.sender, document, transaction.signature):
+        raise ValueError("Signature is wrong")
+    return True
