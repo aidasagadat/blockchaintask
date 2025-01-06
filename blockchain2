@@ -53,3 +53,15 @@ def verify_transaction(transaction):
     if not verify(transaction.sender, document, transaction.signature):
         raise ValueError("Signature is wrong")
     return True
+
+
+# Wallet Class
+class Wallet:
+    def __init__(self, owner_name):
+        self.owner_name = owner_name
+        self.public_key, self.private_key = generate_keys()
+
+    def create_transaction(self, receiver_public_key, amount):
+        transaction = Transaction(self.public_key, receiver_public_key, amount)
+        transaction.sign_transaction(self.private_key)
+        return transaction
