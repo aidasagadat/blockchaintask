@@ -1,9 +1,6 @@
-import json
-import hashlib
-
 def gcd(a, b):
     while b:
-        a, b = b, a % b 
+        a, b = b, a % b
     return a
 
 def mod_inverse(e, phi):
@@ -11,12 +8,14 @@ def mod_inverse(e, phi):
         if (e * d) % phi == 1:
             return d
     return None
-def sha256(data):
-    return hashlib.sha256(data.encode()).hexdigest()
 
+def simple_hash(data):
+    hash_value = 0
+    for char in data:
+        hash_value ^= ord(char)  
+    return hash_value
 
 def generate_keys():
-  
     p = 349
     q = 397
     n = p * q
@@ -24,16 +23,18 @@ def generate_keys():
     e = 17  
     d = mod_inverse(e, phi)
     return (e, n), (d, n)
+
 def sign(private_key, document):
     d, n = private_key
-    document_hash = int(sha256(document), 16) % n
+    document_hash = simple_hash(document) % n
     return pow(document_hash, d, n)
 
 def verify(public_key, document, signature):
     e, n = public_key
-    document_hash = int(sha256(document), 16) % n
+    document_hash = simple_hash(document) % n
     calculated_hash = pow(signature, e, n)
     return document_hash == calculated_hash
+
 class Transaction:
     def __init__(self, sender, receiver, amount):
         self.sender = sender
@@ -54,8 +55,6 @@ def verify_transaction(transaction):
         raise ValueError("Signature is wrong")
     return True
 
-
-# Wallet Class
 class Wallet:
     def __init__(self, owner_name):
         self.owner_name = owner_name
@@ -66,7 +65,6 @@ class Wallet:
         transaction.sign_transaction(self.private_key)
         return transaction
 
-# Blockchain Class
 class Blockchain:
     def __init__(self):
         self.chain = []
@@ -79,27 +77,22 @@ class Blockchain:
         else:
             print("Transaction verification failed!")
 
-# Main Program
 if __name__ == "__main__":
-    # Create wallets for Alice and Bob
     alice = Wallet("Alice")
     bob = Wallet("Bob")
 
     print("Alice's Public Key:", alice.public_key)
     print("Bob's Public Key:", bob.public_key)
-
-    # Alice sends money to Bob
+    
     transaction = alice.create_transaction(bob.public_key, 50)
     print("\nCreated Transaction:", transaction)
 
-    # Verify and add transaction to the blockchain
     blockchain = Blockchain()
     try:
         blockchain.add_transaction(transaction)
     except ValueError as e:
         print(f"Transaction verification failed: {e}")
 
-    # Print blockchain details
     print("\nBlockchain Pending Transactions:")
     for tx in blockchain.pending_transactions:
         print(tx)
